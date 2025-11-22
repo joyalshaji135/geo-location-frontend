@@ -57,7 +57,7 @@ export const useEnhancedLocationData = (): LocationData => {
     stdCode: ''
   });
 
-  const [cacheStats, setCacheStats] = useState({
+  const [cacheStats] = useState({
     size: 0,
     keys: []
   });

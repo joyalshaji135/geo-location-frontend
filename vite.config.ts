@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,18 +10,30 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
         secure: false,
+
+        // Configure proxy events
         configure: (proxy, _options) => {
+
+          // Proxy Error
           proxy.on('error', (err, _req, _res) => {
-            console.log('proxy error', err);
+            console.log('Proxy Error:', err);
           });
-          proxy.on('proxyReq', (proxyReq, req, _res) => {
-            console.log('Sending Request to the Target:', req.method, req.url);
+
+          // Outgoing Request to Backend
+          proxy.on('proxyReq', (_proxyReq, req, _res) => {
+            console.log('➡️ Sending Request to Target:', req.method, req.url);
           });
+
+          // Incoming Response from Backend
           proxy.on('proxyRes', (proxyRes, req, _res) => {
-            console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
+            console.log(
+              '⬅️ Received Response from Target:',
+              proxyRes.statusCode,
+              req.url
+            );
           });
         },
       }
     }
   }
-})
+});
